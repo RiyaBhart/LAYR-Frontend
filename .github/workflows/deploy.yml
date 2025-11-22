@@ -9,4 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: w
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18   # or 20, depending on your project
+
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist   # <-- change if your build folder is different
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
